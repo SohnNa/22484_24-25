@@ -6,7 +6,7 @@
 //bring back arm
 //close claw
 //moveBack
-//strafeLeft to park
+//strafeRight to park
 
 package org.firstinspires.ftc.teamcode;
 
@@ -27,8 +27,8 @@ public class AutoBottomBlue extends LinearOpMode {
   private DcMotor back_left;
   private DcMotor front_right;
   private DcMotor front_left;
-  private DcMotor arm1;
   private DcMotor arm2;
+  private DcMotor arm3;
   //This is the magnetic limit switchs
   TouchSensor lower;// Touch sensor Object
   TouchSensor upper; 
@@ -39,8 +39,8 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left = hardwareMap.get(DcMotor.class, "back_left");
     front_right = hardwareMap.get(DcMotor.class, "front_right");
     front_left = hardwareMap.get(DcMotor.class, "front_left");
-    arm1 = hardwareMap.get(DcMotor.class, "arm1");
     arm2 = hardwareMap.get(DcMotor.class, "arm2");
+    arm3 = hardwareMap.get(DcMotor.class, "arm3");
     Servo servo1 = hardwareMap.servo.get("servo1");
     
     //Arm Stuff
@@ -57,18 +57,24 @@ public class AutoBottomBlue extends LinearOpMode {
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
+      moveForward();
+      upAllow = true;
+      sleep(2000);
+      smallForward();
+      downAllow = true;
+      sleep(2000);
       strafeRight();
-      
+      moveBack();
       
       while (opModeIsActive()) {
         // Put loop blocks here.
                     
             if(downAllow){
-              arm1.setPower(-1);
+              arm2.setPower(-1);
             } else if (upAllow){
-                arm1.setPower(1);
+                arm2.setPower(1);
             } else {
-              arm1.setPower(1);
+              arm2.setPower(1);
             }
             
             if (upper.isPressed()) {
@@ -90,7 +96,7 @@ public class AutoBottomBlue extends LinearOpMode {
             //}
     
           
-            arm1.setPower(0);
+            arm2.setPower(0);
                 
                 
                 
@@ -103,6 +109,27 @@ public class AutoBottomBlue extends LinearOpMode {
    * Describe this function...
    */
   private void moveForward() {
+    back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    front_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    front_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    front_left.setTargetPosition(2000);
+    back_right.setTargetPosition(2000);
+    front_right.setTargetPosition(2000);
+    back_left.setTargetPosition(2000);
+    front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    back_right.setPower(0.5);
+    back_left.setPower(0.5);
+    front_right.setPower(0.5);
+    front_left.setPower(0.5);
+    sleep(5000);
+    
+  }
+  
+  private void smallForward() {
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -122,6 +149,9 @@ public class AutoBottomBlue extends LinearOpMode {
     sleep(5000);
     
   }
+  
+  
+  
   private void moveLeft() {
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -205,17 +235,15 @@ public class AutoBottomBlue extends LinearOpMode {
   
   }
   private void moveBack() {
-    int move = -300;
-    int back = 0;
     
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    front_left.setTargetPosition(move - back);
-    back_right.setTargetPosition(move - back);
-    front_right.setTargetPosition(move - back);
-    back_left.setTargetPosition(move - back);
+    front_left.setTargetPosition(-2000);
+    back_right.setTargetPosition(-2000);
+    front_right.setTargetPosition(-2000);
+    back_left.setTargetPosition(-2000);
     front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -225,7 +253,6 @@ public class AutoBottomBlue extends LinearOpMode {
     front_right.setPower(0.5);
     front_left.setPower(0.5);
     sleep(5000);
-    back -= 700;
   }
   
   
