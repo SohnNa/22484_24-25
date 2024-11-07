@@ -50,6 +50,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
         boolean test = false; 
         boolean test1 = true;
         String test2 = "Offline";
+        boolean notMovingUp = true;
         arm3 = hardwareMap.get(DcMotor.class, "arm3");
         arm2 = hardwareMap.get(DcMotor.class, "arm2");
         lower = hardwareMap.get(TouchSensor.class, "upper");
@@ -84,7 +85,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
         waitForStart();
         imu.resetYaw();
         //This finds the desired way the robot should point at the start...yeah
-        //double desiredBotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double desiredBotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         
         if (isStopRequested()) return;
 
@@ -105,11 +106,11 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
            
            
            
-            //if (rx != 0) {
-            //    desiredBotHeading = botHeading; 
-            //}
-            //else {
-            //    rx = (botHeading - desiredBotHeading)/(Math.PI/2);
+            if (rx != 0) {
+                desiredBotHeading = botHeading; 
+            }
+            else {
+                rx = (botHeading - desiredBotHeading)/(Math.PI/2);
             if (rx > 1) {
                 rx = 1;
             }
@@ -117,7 +118,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 rx = -1; 
             }
 
-            //}
+            }
             
             
             
@@ -146,8 +147,9 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                     arm3.setPower(-1);
                 } if (gamepad2.dpad_up && upAllow){
                     arm3.setPower(1);
+                    notMovingUp = false;
                 }
-
+            notMovingUp = true;
 
 
             //controls for the secound arm. will  be controled with the y and a buttons. 
@@ -166,11 +168,12 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 //This is setting it so that when a magnetic limit switch is activated, it changes the Vairable
                 //upAllow from true to false or vice-versa
                 if (upper.isPressed()) {
-                    //telemetry.addData("Upper touch sensor", "activated");
+                    telemetry.addData("Upper touch sensor", "activated");
                     upAllow = false;
+                    notMovingUp = true;
                   
                 } else {
-                    //telemetry.addData("Upper Touch Sensor ", "not activated");
+                    telemetry.addData("Upper Touch Sensor ", "not activated");
                     upAllow = true;
               
                 }
@@ -179,10 +182,10 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 //downAllow from true to false or vice-versa/ 
                 if (lower.isPressed()) {
                     
-                    //telemetry.addData("Lower touch sensor", "activated");
+                    telemetry.addData("Lower touch sensor", "activated");
                     downAllow = false;
                 } else {
-                    //telemetry.addData("Lower Touch Sensor ", "not activated");
+                    telemetry.addData("Lower Touch Sensor ", "not activated");
                     downAllow = true;
                 }
     
@@ -214,12 +217,12 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
 
             //makeing it so that the servo can open and close. 
             //Left is open, Right is closed?
-            //dpad controls end effector that goes up, x and b for end effoctor that extends out.  
-            if (gamepad2.dpad_left) {
+            //dpad controls end effector that goes up, x and b for end effector that extends out.  
+            if (gamepad2.dpad_left && notMovingUp) {
                 servo2.setPosition(1);
             }
             
-            if (gamepad2.dpad_right) {
+            if (gamepad2.dpad_right && notMovingUp) {
                 servo2.setPosition(0);
             }
 
