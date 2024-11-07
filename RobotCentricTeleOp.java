@@ -20,6 +20,7 @@ public class OtherFieldCentricMecanumTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         
         double speed = 1.0f;
+        notMovingUp = true;
         
         
         // Declare our motors
@@ -72,11 +73,12 @@ public class OtherFieldCentricMecanumTeleOp extends LinearOpMode {
             
             
             if(gamepad2.dpad_down && downAllow){
-                    arm3.setPower(-0.6);
+                    arm3.setPower(-1);
                 } if (gamepad2.dpad_up && upAllow){
-                    arm3.setPower(0.6);
+                    arm3.setPower(1);
+                    notMovingUp = false;
                 }
-
+            notMovingUp = true;    
 
 
             //controls for the secound arm. will  be controled with the y and a buttons. 
@@ -95,9 +97,10 @@ public class OtherFieldCentricMecanumTeleOp extends LinearOpMode {
                 //This is setting it so that when a magnetic limit switch is activated, it changes the Vairable
                 //upAllow from true to false or vice-versa
                 if (upper.isPressed()) {
-                    //telemetry.addData("Upper touch sensor", "activated");
-                    upAllow = false;
-                  
+                //telemetry.addData("Upper touch sensor", "activated");
+                upAllow = false
+                notMovingUp = true;  
+                
                 } else {
                     //telemetry.addData("Upper Touch Sensor ", "not activated");
                     upAllow = true;
@@ -149,11 +152,11 @@ public class OtherFieldCentricMecanumTeleOp extends LinearOpMode {
             
             
             
-            if (gamepad2.dpad_left) {
+            if (gamepad2.dpad_left && notMovingUp) {
                 servo1.setPosition(1);
             }
             
-            if (gamepad2.dpad_right) {
+            if (gamepad2.dpad_right && notMovingUp) {
                 servo1.setPosition(0);
             }
 
