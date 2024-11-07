@@ -57,13 +57,18 @@ public class AutoBottomBlue extends LinearOpMode {
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
+      servo2.setPosition(0);
       moveForward();
       upAllow = true;
-      sleep(2000);
+      sleep(3000);
       smallForward();
       downAllow = true;
-      sleep(2000);
+      sleep(1000);
+      servo2.setPosition(1);
+      downAllow = true;
+      sleep(3000);
       strafeRight();
+      servo2.setPosition(0);
       moveBack();
       
       while (opModeIsActive()) {
