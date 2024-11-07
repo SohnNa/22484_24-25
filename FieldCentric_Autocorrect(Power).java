@@ -110,7 +110,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 desiredBotHeading = botHeading; 
             }
             else {
-                rx = (botHeading - desiredBotHeading)/(Math.PI/2);
+                rx = (botHeading + desiredBotHeading)/(Math.PI/2);
             if (rx > 1) {
                 rx = 1;
             }
