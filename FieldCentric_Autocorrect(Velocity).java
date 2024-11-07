@@ -58,7 +58,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         double speed = 1.0f; 
         boolean test = false; 
         boolean test1 = true;
-        boolean nothing = true;
+        boolean notMovingUp = true;
         String test2 = "Offline";
         arm3 = hardwareMap.get(DcMotorEx.class, "arm3");
         arm2 = hardwareMap.get(DcMotorEx.class, "arm2");
@@ -162,12 +162,12 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             
             if(gamepad2.dpad_down && downAllow){
                     arm3.setVelocity(-1);
-                    nothing = false;
+                    
                 } if (gamepad2.dpad_up && upAllow){
                     arm3.setVelocity(1);
-                    nothing = false;
+                    notMovingUp = false;
                 } else {
-                nothing = true;
+                notMovingUp = true;
             }
 
 
@@ -187,11 +187,12 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 //This is setting it so that when a magnetic limit switch is activated, it changes the Vairable
                 //upAllow from true to false or vice-versa
                 if (upper.isPressed()) {
-                    //telemetry.addData("Upper touch sensor", "activated");
+                    telemetry.addData("Upper touch sensor", "activated");
                     upAllow = false;
+                    notMovingUp = true;
                   
                 } else {
-                    //telemetry.addData("Upper Touch Sensor ", "not activated");
+                    telemetry.addData("Upper Touch Sensor ", "not activated");
                     upAllow = true;
               
                 }
@@ -200,10 +201,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 //downAllow from true to false or vice-versa/ 
                 if (lower.isPressed()) {
                     
-                    //telemetry.addData("Lower touch sensor", "activated");
+                    telemetry.addData("Lower touch sensor", "activated");
                     downAllow = false;
                 } else {
-                    //telemetry.addData("Lower Touch Sensor ", "not activated");
+                    telemetry.addData("Lower Touch Sensor ", "not activated");
                     downAllow = true;
                 }
     
@@ -236,11 +237,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //makeing it so that the servo can open and close. 
             //Left is open, Right is closed?
             //dpad controls end effector that goes up, x and b for end effoctor that extends out.  
-            if (gamepad2.dpad_left && nothing) {
+            if (gamepad2.dpad_left && notMovingUp) {
                 servo1.setPosition(1);
             }
             
-            if (gamepad2.dpad_right && nothing) {
+            if (gamepad2.dpad_right && notMovingUp) {
                 servo1.setPosition(0);
             }
 
