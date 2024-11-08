@@ -221,7 +221,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
             }
 
             //makeing it so that the servo can open and close. 
-            //Left is open, Right is closed?
+            //Left is open, Right is closed
             //dpad controls end effector that goes up, x and b for end effector that extends out.  
             if (gamepad2.dpad_left && notMovingUp) {
                 servo2.setPosition(1);
