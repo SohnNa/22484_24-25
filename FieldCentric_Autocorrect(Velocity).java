@@ -40,10 +40,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
     
     //This is the magnetic limit switchs
-    TouchSensor lower;  // Touch sensor Object
-    TouchSensor upper; 
-    DcMotorEx arm3;
-    DcMotorEx arm2;
+    TouchSensor mag_arm_lower;  // Touch sensor Object
+    TouchSensor mag_arm_upper; 
+    DcMotorEx arm_main;
+    DcMotorEx arm_intake;
 
     //This code below is test code for using Velocity over power. I have tried using velocity in the past and this time it should work. 
     //The reason it did not work is becuase you need DcMotorEx as the class. Should be interesting to see if this works. 
@@ -60,10 +60,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         boolean test1 = true;
         boolean notMovingUp = true;
         String test2 = "Offline";
-        arm3 = hardwareMap.get(DcMotorEx.class, "arm3");
-        arm2 = hardwareMap.get(DcMotorEx.class, "arm2");
-        lower = hardwareMap.get(TouchSensor.class, "upper");
-        upper = hardwareMap.get(TouchSensor.class, "lower");
+        arm_main = hardwareMap.get(DcMotorEx.class, "arm_main");
+        arm_intake = hardwareMap.get(DcMotorEx.class, "arm_intake");
+        mag_arm_lower = hardwareMap.get(TouchSensor.class, "mag_arm_lower");
+        mag_arm_upper = hardwareMap.get(TouchSensor.class, "mag_arm_upper");
         boolean downAllow = true;
         boolean upAllow = true;
         
@@ -74,8 +74,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotorEx back_left = hardwareMap.get(DcMotorEx.class, "back_left");
         DcMotorEx front_right = hardwareMap.get(DcMotorEx.class, "front_right");
         DcMotorEx back_right = hardwareMap.get(DcMotorEx.class, "back_right");
-        Servo servo1 = hardwareMap.servo.get("servo1");
-        Servo servo2 = hardwareMap.servo.get("servo2");
+        Servo servo_arm = hardwareMap.servo.get("servo_arm");
+        Servo servo_intake = hardwareMap.servo.get("servo_intake");
 
         
         // Reversing the motors. If you want an explanation, see Robot Centric Code. 
@@ -161,10 +161,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //give one driver too much to do at the same time. It is controled with up and down on the dpad. 
             
             if(gamepad2.dpad_down && downAllow){
-                    arm3.setVelocity(-10000);
+                    arm_main.setVelocity(-10000);
                     
                 } else if (gamepad2.dpad_up && upAllow){
-                    arm3.setVelocity(10000);
+                    arm_main.setVelocity(10000);
                     notMovingUp = false;
                 } else {
                 notMovingUp = true;
@@ -175,42 +175,42 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //reason there is no checks is becuase we are not puttiong on magnetic limit switchs for some reason...
 
             if (gamepad2.a) {
-                arm2.setVelocity(0.5);
+                arm_intake.setVelocity(0.5);
             }
 
             if (gamepad2.y) {
-                arm2.setVelocity(-0.5);
+                arm_intake.setVelocity(-0.5);
             }
                 
                 // lower is the bottom magnetic limit. Upper is the top magnetic limit switch.
                 
                 //This is setting it so that when a magnetic limit switch is activated, it changes the Vairable
                 //upAllow from true to false or vice-versa
-                if (upper.isPressed()) {
-                    telemetry.addData("Upper touch sensor", "activated");
+                if (mag_arm_upper.isPressed()) {
+                    telemetry.addData("mag_arm_upper touch sensor", "activated");
                     upAllow = false;
                     notMovingUp = true;
                   
                 } else {
-                    telemetry.addData("Upper Touch Sensor ", "not activated");
+                    telemetry.addData("mag_arm_upper Touch Sensor ", "not activated");
                     upAllow = true;
               
                 }
                 
                 //This is setting it so that when a magnetic limit switch is activated, it changes the Vairable
                 //downAllow from true to false or vice-versa/ 
-                if (lower.isPressed()) {
+                if (mag_arm_lower.isPressed()) {
                     
-                    telemetry.addData("Lower touch sensor", "activated");
+                    telemetry.addData("mag_arm_lower touch sensor", "activated");
                     downAllow = false;
                 } else {
-                    telemetry.addData("Lower Touch Sensor ", "not activated");
+                    telemetry.addData("mag_arm_lower Touch Sensor ", "not activated");
                     downAllow = true;
                 }
     
           
-                arm3.setVelocity(0);
-                arm2.setVelocity(0);
+                arm_main.setVelocity(0);
+                arm_intake.setVelocity(0);
                 
                 
                 
@@ -238,19 +238,19 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //Left is open, Right is closed?
             //dpad controls end effector that goes up, x and b for end effoctor that extends out.  
             if (gamepad2.dpad_left && notMovingUp) {
-                servo1.setPosition(1);
+                servo_arm.setPosition(1);
             }
             
             if (gamepad2.dpad_right && notMovingUp) {
-                servo1.setPosition(0);
+                servo_arm.setPosition(0);
             }
 
 
             if (gamepad2.x) {
-                servo2.setPosition(1);
+                servo_intake.setPosition(1);
 
             } else if (gamepad2.b) {
-                servo2.setPosition(0);
+                servo_intake.setPosition(0);
             }
             
             
