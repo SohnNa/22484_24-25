@@ -161,10 +161,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //give one driver too much to do at the same time. It is controled with up and down on the dpad. 
             
             if(gamepad2.dpad_down && downAllow){
-                    arm3.setVelocity(-1);
+                    arm3.setVelocity(-10000);
                     
-                } if (gamepad2.dpad_up && upAllow){
-                    arm3.setVelocity(1);
+                } else if (gamepad2.dpad_up && upAllow){
+                    arm3.setVelocity(10000);
                     notMovingUp = false;
                 } else {
                 notMovingUp = true;
