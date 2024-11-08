@@ -50,6 +50,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
         boolean test = false; 
         boolean test1 = true;
         String test2 = "Offline";
+        //notMovingUp fixes the butterfinger problem we found during the first comp.
         boolean notMovingUp = true;
         arm3 = hardwareMap.get(DcMotor.class, "arm3");
         arm2 = hardwareMap.get(DcMotor.class, "arm2");
@@ -145,11 +146,15 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
             
             if(gamepad2.dpad_down && downAllow){
                     arm3.setPower(-1);
-                } if (gamepad2.dpad_up && upAllow){
+                } else if (gamepad2.dpad_up && upAllow){
                     arm3.setPower(1);
                     notMovingUp = false;
+                } else {
+                    notMovingUp = true;
                 }
-            notMovingUp = true;
+            
+            
+            
 
 
             //controls for the secound arm. will  be controled with the y and a buttons. 
@@ -222,7 +227,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 servo2.setPosition(1);
             }
             
-            if (gamepad2.dpad_right && notMovingUp) {
+            if (gamepad2.dpad_right) {
                 servo2.setPosition(0);
             }
 
@@ -250,6 +255,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
           
             telemetry.addData("Switch", test2);
             telemetry.addData("Speed", speed);
+            telemetry.addData("notMovingUp", notMovingUp);
             telemetry.update();
                 
             
