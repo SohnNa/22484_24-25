@@ -42,6 +42,7 @@ public class AutoBottomBlue extends LinearOpMode {
     arm2 = hardwareMap.get(DcMotor.class, "arm2");
     arm3 = hardwareMap.get(DcMotor.class, "arm3");
     Servo servo1 = hardwareMap.servo.get("servo1");
+    Servo servo2 = hardwareMap.servo.get("servo2");
     
     //Arm Stuff
     boolean downAllow = false;
@@ -57,18 +58,20 @@ public class AutoBottomBlue extends LinearOpMode {
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
-      servo2.setPosition(0);
+      servo2.setPosition(1);
       moveForward();
       upAllow = true;
       sleep(3000);
       smallForward();
       downAllow = true;
       sleep(1000);
-      servo2.setPosition(1);
+      downAllow = false;
+      servo2.setPosition(0);
       downAllow = true;
       sleep(3000);
       strafeRight();
-      servo2.setPosition(0);
+      servo2.setPosition(1);
+      sleep(1000);
       moveBack();
       
       while (opModeIsActive()) {
@@ -204,10 +207,10 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    front_left.setTargetPosition(-2000);
-    back_right.setTargetPosition(-2000);
-    front_right.setTargetPosition(2000);
-    back_left.setTargetPosition(2000);
+    front_left.setTargetPosition(-2500);
+    back_right.setTargetPosition(-2500);
+    front_right.setTargetPosition(2500);
+    back_left.setTargetPosition(2500);
     front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
