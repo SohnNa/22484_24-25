@@ -27,11 +27,11 @@ public class AutoBottomBlue extends LinearOpMode {
   private DcMotor back_left;
   private DcMotor front_right;
   private DcMotor front_left;
-  private DcMotor arm2;
-  private DcMotor arm3;
+  private DcMotor arm_main;
+  private DcMotor arm_intake;
   //This is the magnetic limit switchs
-  TouchSensor lower;// Touch sensor Object
-  TouchSensor upper; 
+  TouchSensor mag_arm_lower;// Touch sensor Object
+  TouchSensor mag_arm_upper; 
 
   @Override
   public void runOpMode() {
@@ -39,16 +39,16 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left = hardwareMap.get(DcMotor.class, "back_left");
     front_right = hardwareMap.get(DcMotor.class, "front_right");
     front_left = hardwareMap.get(DcMotor.class, "front_left");
-    arm2 = hardwareMap.get(DcMotor.class, "arm2");
-    arm3 = hardwareMap.get(DcMotor.class, "arm3");
-    Servo servo1 = hardwareMap.servo.get("servo1");
-    Servo servo2 = hardwareMap.servo.get("servo2");
+    arm_main = hardwareMap.get(DcMotor.class, "arm_main");
+    arm_intake = hardwareMap.get(DcMotor.class, "arm_intake");
+    Servo servo_intake = hardwareMap.servo.get("servo_intake");
+    Servo servo_arm = hardwareMap.servo.get("servo_arm");
     
     //Arm Stuff
     boolean downAllow = false;
     boolean upAllow = false;
-    lower = hardwareMap.get(TouchSensor.class, "lower");
-    upper = hardwareMap.get(TouchSensor.class, "upper");
+    mag_arm_lower = hardwareMap.get(TouchSensor.class, "mag_arm_lower");
+    mag_arm_upper = hardwareMap.get(TouchSensor.class, "mag_arm_upper");
     
 
 
@@ -58,7 +58,7 @@ public class AutoBottomBlue extends LinearOpMode {
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
-      servo2.setPosition(1);
+      servo_arm.setPosition(1);
       moveForward();
       upAllow = true;
       sleep(3000);
@@ -66,11 +66,11 @@ public class AutoBottomBlue extends LinearOpMode {
       downAllow = true;
       sleep(1000);
       downAllow = false;
-      servo2.setPosition(0);
+      servo_arm.setPosition(0);
       downAllow = true;
       sleep(3000);
       strafeRight();
-      servo2.setPosition(1);
+      servo_arm.setPosition(1);
       sleep(1000);
       moveBack();
       
@@ -78,33 +78,33 @@ public class AutoBottomBlue extends LinearOpMode {
         // Put loop blocks here.
                     
             if(downAllow){
-              arm2.setPower(-1);
+              arm_main.setPower(-1);
             } else if (upAllow){
-                arm2.setPower(1);
+                arm_main.setPower(1);
             } else {
-              arm2.setPower(1);
+              arm_main.setPower(1);
             }
             
-            if (upper.isPressed()) {
-              //telemetry.addData("Upper touch sensor", "activated");
+            if (mag_arm_upper.isPressed()) {
+              //telemetry.addData("mag_arm_upper touch sensor", "activated");
               upAllow = false;
                   
             } //else {
-                //telemetry.addData("Upper Touch Sensor ", "not activated");
+                //telemetry.addData("mag_arm_upper Touch Sensor ", "not activated");
             //    upAllow = true;
               
             //}
                 
-            if (lower.isPressed()) {
-              //telemetry.addData("Lower touch sensor", "activated");
+            if (mag_arm_lower.isPressed()) {
+              //telemetry.addData("mag_arm_lower touch sensor", "activated");
               downAllow = false;
             } //else {
-                //telemetry.addData("Lower Touch Sensor ", "not activated");
+                //telemetry.addData("mag_arm_lower Touch Sensor ", "not activated");
              //   downAllow = true;
             //}
     
           
-            arm2.setPower(0);
+            arm_main.setPower(0);
                 
                 
                 
