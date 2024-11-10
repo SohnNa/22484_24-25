@@ -68,6 +68,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
         DcMotor back_right = hardwareMap.dcMotor.get("back_right");
         Servo servo_intake = hardwareMap.servo.get("servo_intake");
         Servo servo_arm = hardwareMap.servo.get("servo_arm");
+        Servo servo_transfer_1 = hardwareMap.servo.get("servo_transfer_1");
 
         
         // Reversing the motors. If you want an explanation, see Robot Centric Code. 
@@ -237,6 +238,16 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
 
             } else if (gamepad2.b) {
                 servo_intake.setPosition(0);
+            }
+
+
+
+            if (gamepad2.right_bumper) {
+                servo_transfer_1.setPosition(1);
+            } else if (gamepad2.left_bumper) {
+                servo_transfer_1.setPosition(0);
+            } else {
+                servo_transfer_1.setPosition(0.5);
             }
             
             
