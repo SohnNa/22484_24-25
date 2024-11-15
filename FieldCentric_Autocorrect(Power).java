@@ -35,7 +35,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp(name = "Fixing Field Centric - 11/6/24 (Power)")
 //@Disabled
-public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
+public class FieldCentricMecanumTeleOp extends LinearOpMode {
     
     //This is the magnetic limit switchs
     TouchSensor mag_arm_lower;  // Touch sensor Object
@@ -50,6 +50,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
         boolean test = false; 
         boolean test1 = true;
         String test2 = "Offline";
+        double arm_main_power = 0;
         //notMovingUp fixes the butterfinger problem we found during the first comp.
         boolean notMovingUp = true;
         arm_main = hardwareMap.get(DcMotor.class, "arm_main");
@@ -72,7 +73,11 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
 
         
         // Reversing the motors. If you want an explanation, see Robot Centric Code. 
-        front_right.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+        
+        
+        arm_main.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -99,20 +104,21 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
             // might change the direction that is forward when driving in field centric. When tested, it worked but only when the self-correcting was not added. 
             //This data is correct as of 10/9/24
 
-           // if (gamepad1.left_bumper) {
-           //     imu.resetYaw();
-           // }
+            if (gamepad1.left_bumper) {
+                imu.resetYaw();
+            }
             
             
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
            
            
            
-            if (rx != 0) {
-                desiredBotHeading = botHeading; 
-            }
-            else {
-                rx = (botHeading + desiredBotHeading)/(Math.PI/2);
+            //if (rx != 0) {
+            //    desiredBotHeading = botHeading; 
+            //}
+            //else {
+            //    rx = (botHeading - desiredBotHeading)/(Math.PI/2);
+            
             if (rx > 1) {
                 rx = 1;
             }
@@ -120,7 +126,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 rx = -1; 
             }
 
-            }
+            //}
             
             
             
@@ -146,14 +152,19 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
             //give one driver too much to do at the same time. It is controled with up and down on the dpad. 
             
             if(gamepad2.dpad_down && downAllow){
-                    arm_main.setPower(-1);
+                    arm_main_power = -0.73;
+                    //arm_main.setPower(-0.6);
+
                 } else if (gamepad2.dpad_up && upAllow){
-                    arm_main.setPower(1);
+                    arm_main_power = 0.73;
+                    //arm)main.setPower(0.6);
                     notMovingUp = false;
                 } else {
                     notMovingUp = true;
+                    arm_main_power = 0.0;
                 }
-            
+            telemetry.addData("Arm_main", arm_main_power);
+            arm_main.setPower(arm_main_power);
             
             
 
@@ -162,11 +173,11 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
             //reason there is no checks is becuase we are not puttiong on magnetic limit switchs for some reason...
 
             if (gamepad2.y) {
-                arm_intake.setPower(1);
+                arm_intake.setPower(0.65);
             }
 
             if (gamepad2.a) {
-                arm_intake.setPower(-1);
+                arm_intake.setPower(-0.65);
             }
                 
                 // lower is the bottom magnetic limit. Upper is the top magnetic limit switch.
@@ -174,7 +185,7 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 //This is setting it so that when a magnetic limit switch is activated, it changes the Vairable
                 //upAllow from true to false or vice-versa
                 if (mag_arm_upper.isPressed()) {
-                    telemetry.addData("mag_arm_upper touch sensor", "activated");
+                    telemetry.addData("mag_arm_upper Touch Sensor", "activated");
                     upAllow = false;
                     notMovingUp = true;
                   
@@ -188,38 +199,20 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
                 //downAllow from true to false or vice-versa/ 
                 if (mag_arm_lower.isPressed()) {
                     
-                    telemetry.addData("mag_arm_lower touch sensor", "activated");
+                    telemetry.addData("mag_arm_lower Touch Sensor", "activated");
                     downAllow = false;
                 } else {
                     telemetry.addData("mag_arm_lower Touch Sensor ", "not activated");
                     downAllow = true;
                 }
     
-          
-                arm_main.setPower(0);
+                //arm_main.setPower(0);
                 arm_intake.setPower(0);
                 
                 
                 
-            //Setting "Gears" to the robot so that the driver can slow the robot down without
-            //risk of misusing or damaging the controller. Getting tired of re-implamenting this
             
             
-            if (gamepad1.a) {
-                speed = 1.0f;
-            }
-            
-            if (gamepad1.b) {
-                speed = 0.75f; 
-            } 
-            
-            if (gamepad1.y) {
-                speed = 0.5f; 
-            }
-            
-            if (gamepad1.x) {
-                speed = 0.25f;
-            }
 
             //makeing it so that the servo can open and close. 
             //Left is open, Right is closed
@@ -267,6 +260,12 @@ public class FieldCentricMecanumTeleOp_ extends LinearOpMode {
             telemetry.addData("Switch", test2);
             telemetry.addData("Speed", speed);
             telemetry.addData("notMovingUp", notMovingUp);
+            
+            telemetry.addData("Front_left", front_left_Power);
+            telemetry.addData("Front_right", front_right_Power);
+            telemetry.addData("Back_left", back_left_Power);
+            telemetry.addData("Back_right", back_right_Power);
+            
             telemetry.update();
                 
             
