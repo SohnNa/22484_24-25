@@ -20,18 +20,18 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "AutoBottomRed")
+@Autonomous(name = "AutoBottomRed - Basic")
 public class AutoBottomRed extends LinearOpMode {
 
   private DcMotor back_right;
   private DcMotor back_left;
   private DcMotor front_right;
   private DcMotor front_left;
-  private DcMotor arm1;
-  private DcMotor arm2;
+  private DcMotor arm_main;
+  private DcMotor arm_intake;
   //This is the magnetic limit switchs
-  TouchSensor lower;// Touch sensor Object
-  TouchSensor upper; 
+  TouchSensor mag_arm_lower;// Touch sensor Object
+  TouchSensor mag_arm_upper; 
 
   @Override
   public void runOpMode() {
@@ -39,38 +39,45 @@ public class AutoBottomRed extends LinearOpMode {
     back_left = hardwareMap.get(DcMotor.class, "back_left");
     front_right = hardwareMap.get(DcMotor.class, "front_right");
     front_left = hardwareMap.get(DcMotor.class, "front_left");
-    arm1 = hardwareMap.get(DcMotor.class, "arm1");
-    arm2 = hardwareMap.get(DcMotor.class, "arm2");
-    Servo servo1 = hardwareMap.servo.get("servo1");
+    arm_main = hardwareMap.get(DcMotor.class, "arm_main");
+    arm_intake = hardwareMap.get(DcMotor.class, "arm_intake");
+    Servo servo_arm = hardwareMap.servo.get("servo_arm");
     
     //Arm Stuff
     boolean downAllow = false;
     boolean upAllow = false;
-    lower = hardwareMap.get(TouchSensor.class, "lower");
-    upper = hardwareMap.get(TouchSensor.class, "upper");
+    mag_arm_lower = hardwareMap.get(TouchSensor.class, "mag_arm_lower");
+    mag_arm_upper = hardwareMap.get(TouchSensor.class, "mag_arm_upper");
 
 
 
-    front_right.setDirection(DcMotorSimple.Direction.REVERSE);
+    back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+    back_left.setDirection(DcMotorSimple.Direction.REVERSE);  
+    front_right.setDirection(DcMotorSimple.Direction.FORWARD);
+    front_left.setDirection(DcMotorSimple.Direction.FORWARD);
+    
+    arm_main.setDirection(DcMotorSimple.Direction.REVERSE);
     // Put initialization blocks here.
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
       strafeRight();
+      downAllow = false;
+      upAllow = false;
       
       
       while (opModeIsActive()) {
         // Put loop blocks here.
                     
             if(downAllow){
-              arm1.setPower(-1);
+              arm_main.setPower(-1);
             } else if (upAllow){
-                arm1.setPower(1);
+                arm_main.setPower(1);
             } else {
-              arm1.setPower(1);
+              arm_main.setPower(0);
             }
             
-            if (upper.isPressed()) {
+            if (mag_arm_upper.isPressed()) {
               //telemetry.addData("Upper touch sensor", "activated");
               upAllow = false;
                   
@@ -80,7 +87,7 @@ public class AutoBottomRed extends LinearOpMode {
               
             //}
                 
-            if (lower.isPressed()) {
+            if (mag_arm_lower.isPressed()) {
               //telemetry.addData("Lower touch sensor", "activated");
               downAllow = false;
             } //else {
@@ -89,7 +96,7 @@ public class AutoBottomRed extends LinearOpMode {
             //}
     
           
-            arm1.setPower(0);
+            arm_main.setPower(0);
                 
                 
                 
@@ -168,10 +175,10 @@ public class AutoBottomRed extends LinearOpMode {
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    front_left.setTargetPosition(-2000);
-    back_right.setTargetPosition(-2000);
-    front_right.setTargetPosition(2000);
-    back_left.setTargetPosition(2000);
+    front_left.setTargetPosition(3000);
+    back_right.setTargetPosition(3000);
+    front_right.setTargetPosition(-3000);
+    back_left.setTargetPosition(-3000);
     front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
