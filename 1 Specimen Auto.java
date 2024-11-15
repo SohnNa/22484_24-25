@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "AutoBottomBlue")
+@Autonomous(name = "1 Specimen Auto")
 public class AutoBottomBlue extends LinearOpMode {
 
   private DcMotor back_right;
@@ -53,36 +53,52 @@ public class AutoBottomBlue extends LinearOpMode {
 
 
 
-    front_right.setDirection(DcMotorSimple.Direction.REVERSE);
+    back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+    back_left.setDirection(DcMotorSimple.Direction.REVERSE);  
+    front_right.setDirection(DcMotorSimple.Direction.FORWARD);
+    front_left.setDirection(DcMotorSimple.Direction.FORWARD);
+    
+    arm_main.setDirection(DcMotorSimple.Direction.REVERSE);
+    
+    
+    
     // Put initialization blocks here.
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
-      servo_arm.setPosition(1);
-      moveForward();
-      upAllow = true;
+      servo_arm.setPosition(0);
+      arm_main.setPower(1);
+      sleep(1650);
+      arm_main.setPower(0);
       sleep(3000);
       smallForward();
-      downAllow = true;
-      sleep(1000);
-      downAllow = false;
-      servo_arm.setPosition(0);
-      downAllow = true;
-      sleep(3000);
-      strafeRight();
+      arm_main.setPower(-1);
+      sleep(515);
+      arm_main.setPower(0);
+      sleep(500);
       servo_arm.setPosition(1);
-      sleep(1000);
+      sleep(100);
+      arm_main.setPower(-1);
+      sleep(1135);
+      arm_main.setPower(0);
+      strafeRight();
       moveBack();
+      
+      
       
       while (opModeIsActive()) {
         // Put loop blocks here.
                     
-            if(downAllow){
-              arm_main.setPower(-1);
-            } else if (upAllow){
-                arm_main.setPower(1);
-            } else {
-              arm_main.setPower(1);
+            //if(downAllow){
+            //  arm_main.setPower(-1);
+            //} else if (upAllow){
+            //    arm_main.setPower(1);
+            //} else {
+            //  arm_main.setPower(0);
+            //}
+            
+            if (upAllow = false) {
+              arm_main.setPower(0);
             }
             
             if (mag_arm_upper.isPressed()) {
@@ -119,8 +135,8 @@ public class AutoBottomBlue extends LinearOpMode {
   private void moveForward() {
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    front_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    front_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_left.setTargetPosition(2000);
     back_right.setTargetPosition(2000);
     front_right.setTargetPosition(2000);
@@ -133,19 +149,19 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setPower(0.5);
     front_right.setPower(0.5);
     front_left.setPower(0.5);
-    sleep(5000);
+    sleep(3000);
     
   }
   
-  private void smallForward() {
+ private void smallForward() {
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    front_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    front_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    front_left.setTargetPosition(1000);
-    back_right.setTargetPosition(1000);
-    front_right.setTargetPosition(1000);
-    back_left.setTargetPosition(1000);
+    front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    front_left.setTargetPosition(1550);
+    back_right.setTargetPosition(1550);
+    front_right.setTargetPosition(1550);
+    back_left.setTargetPosition(1550);
     front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -154,7 +170,7 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setPower(0.5);
     front_right.setPower(0.5);
     front_left.setPower(0.5);
-    sleep(5000);
+    sleep(3000);
     
   }
   
@@ -177,7 +193,7 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setPower(0.5);
     front_right.setPower(0.5);
     front_left.setPower(0.5);
-    sleep(5000);
+    sleep(3000);
   
   }
   private void strafeLeft() {
@@ -197,7 +213,7 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setPower(0.5);
     front_right.setPower(0.5);
     front_left.setPower(0.5);
-    sleep(5000);
+    sleep(3000);
   
   }
   
@@ -207,10 +223,10 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    front_left.setTargetPosition(-2500);
-    back_right.setTargetPosition(-2500);
-    front_right.setTargetPosition(2500);
-    back_left.setTargetPosition(2500);
+    front_left.setTargetPosition(2800);
+    back_right.setTargetPosition(2800);
+    front_right.setTargetPosition(-2800);
+    back_left.setTargetPosition(-2800);
     front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -219,7 +235,7 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setPower(0.5);
     front_right.setPower(0.5);
     front_left.setPower(0.5);
-    sleep(5000);
+    sleep(3000);
   
   }
   private void moveRight() {
@@ -239,7 +255,7 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setPower(0.5);
     front_right.setPower(0.5);
     front_left.setPower(0.5);
-    sleep(5000);
+    sleep(3000);
   
   }
   private void moveBack() {
@@ -248,10 +264,10 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    front_left.setTargetPosition(-2000);
-    back_right.setTargetPosition(-2000);
-    front_right.setTargetPosition(-2000);
-    back_left.setTargetPosition(-2000);
+    front_left.setTargetPosition(-1500);
+    back_right.setTargetPosition(-1500);
+    front_right.setTargetPosition(-1500);
+    back_left.setTargetPosition(-1500);
     front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -260,7 +276,7 @@ public class AutoBottomBlue extends LinearOpMode {
     back_left.setPower(0.5);
     front_right.setPower(0.5);
     front_left.setPower(0.5);
-    sleep(5000);
+    sleep(3000);
   }
   
   
