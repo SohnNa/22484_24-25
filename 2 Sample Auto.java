@@ -1,11 +1,11 @@
 //Plan: 
-//moveForward
-//strafeRight
+//moveForward2
+//strafeRight2
 //arm extend
 //place specimen
 //bring back arm
 //close claw
-//moveBack
+//moveBack2
 //strafeLeft to park
 
 package org.firstinspires.ftc.teamcode;
@@ -61,13 +61,13 @@ public class AutoTopRed extends LinearOpMode {
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
-      strafeRight();
-      moveForward();
-      moveRight();
-      moveBack();
-      moveForward();
-      moveRight();
-      moveBack();
+      strafeRight2();
+      moveForward2();
+      moveRight2();
+      moveBack2();
+      moveForward2();
+      moveRight2();
+      moveBack2();
       while (opModeIsActive()) {
         // Put loop blocks here.
                     
@@ -110,7 +110,7 @@ public class AutoTopRed extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void moveForward() {
+  private void moveForward2() {
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -172,7 +172,7 @@ public class AutoTopRed extends LinearOpMode {
   }
   
   
-  private void strafeRight() {
+  private void strafeRight2() {
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -192,7 +192,7 @@ public class AutoTopRed extends LinearOpMode {
     sleep(3000);
   
   }
-  private void moveRight() {
+  private void moveRight2() {
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -212,7 +212,7 @@ public class AutoTopRed extends LinearOpMode {
     sleep(2500);
   
   }
-  private void moveBack() {
+  private void moveBack2() {
     int move = -2800;
     back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
