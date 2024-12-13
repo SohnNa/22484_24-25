@@ -13,6 +13,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -33,7 +36,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
 
-@TeleOp(name = "Fixing Field Centric - 11/6/24 (Power)")
+@TeleOp(name = "Field Centric - 11/6/24 (Power)")
 //@Disabled
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
     
@@ -42,6 +45,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     TouchSensor mag_arm_upper; 
     DcMotor arm_main;
     DcMotor arm_intake;
+    DistanceSensor distance_1;
     @Override
     public void runOpMode() throws InterruptedException {
         
@@ -67,9 +71,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor back_left = hardwareMap.dcMotor.get("back_left");
         DcMotor front_right = hardwareMap.dcMotor.get("front_right");
         DcMotor back_right = hardwareMap.dcMotor.get("back_right");
+        DcMotorEx hang_1 = hardwareMap.get(DcMotorEx.class, "hang_1");
         Servo servo_intake = hardwareMap.servo.get("servo_intake");
         Servo servo_arm = hardwareMap.servo.get("servo_arm");
         Servo servo_transfer_1 = hardwareMap.servo.get("servo_transfer_1");
+        distance_1 = hardwareMap.get(DistanceSensor.class, "distance_1");
 
         
         // Reversing the motors. If you want an explanation, see Robot Centric Code. 
@@ -179,6 +185,20 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             if (gamepad2.a) {
                 arm_intake.setPower(-0.65);
             }
+            
+            if (gamepad1.a) {
+                hang_1.setPower(1);
+            } else if (gamepad1.b) {
+                hang_1.setPower(-1);
+            } else {
+                hang_1.setPower(0);
+            }
+            
+            
+            
+            
+            
+            
                 
                 // lower is the bottom magnetic limit. Upper is the top magnetic limit switch.
                 
@@ -265,6 +285,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             telemetry.addData("Front_right", front_right_Power);
             telemetry.addData("Back_left", back_left_Power);
             telemetry.addData("Back_right", back_right_Power);
+            
+            telemetry.addData("Distance", distance_1.getDistance(DistanceUnit.CM));
+            
             
             telemetry.update();
                 
