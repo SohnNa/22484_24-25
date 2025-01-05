@@ -370,13 +370,6 @@ public class Encoder_Testing extends LinearOpMode {
     
     
   }
-
-    
-  
-
-  
-  
-  
   
   
   
@@ -691,6 +684,9 @@ public class Encoder_Testing extends LinearOpMode {
       double error = 0;
 
       //signum finds the sum of the number
+      
+      
+ 
       double base_power = 0.6 * Math.signum(target);
       
       
@@ -730,7 +726,57 @@ public class Encoder_Testing extends LinearOpMode {
   }
   
   
-  private void strafeBy()
+  private void strafeBy(int goal) {
+  
+      double current_yaw, target_yaw, power;
+      YawPitchRollAngles robotOrentation;
+      
+      robotOrentation = imu.getRobotYawPitchRollAngles();
+      current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
+      target_yaw = current_yaw;
+      double yaw_error = 0;
+      double error = 0;
+
+      //signum finds the sum of the number
+
+
+      //I think i do not need the Math.signum becuase the power is positve even if I am going to the left or the right
+      //at least thats how it worked on my previous functions.
+      double base_power = 0.6 //* Math.signum(goal);
+    
+      back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      front_left.setTargetPosition(goal);
+      back_right.setTargetPosition(goal);
+      front_right.setTargetPosition(-goal);
+      back_left.setTargetPosition(-goal);
+      front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      back_right.setPower(base_power);
+      back_left.setPower(base_power);
+      front_right.setPower(base_power);
+      front_left.setPower(base_power);
+      while (front_left.getCurrentPosition() < goal) {
+        
+        current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
+        yaw_error = current_yaw - target_yaw;
+        //The signs may need to be switched. Will know if robot starts spinning or something of that sort. 
+        back_right.setPower(base_power - yaw_error/100);
+        back_left.setPower(base_power + yaw_error/100);
+        front_right.setPower(base_power - yaw_error/100);
+        front_left.setPower(base_power + yaw_error/100);
+      
+        telemetry.addData("Left_Motor", front_left.getCurrentPosition());
+        telemetry.update();
+      }
+      error = current_yaw - target_yaw;
+      Yaw_Turn(error);
+
+  }
   
   
   
