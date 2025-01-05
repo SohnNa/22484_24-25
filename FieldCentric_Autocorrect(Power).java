@@ -75,6 +75,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Servo servo_intake = hardwareMap.servo.get("servo_intake");
         Servo servo_arm = hardwareMap.servo.get("servo_arm");
         Servo servo_transfer_1 = hardwareMap.servo.get("servo_transfer_1");
+        Servo servo_2 hardwareMap.servo.get("servo_2");
         distance_1 = hardwareMap.get(DistanceSensor.class, "distance_1");
 
         
@@ -180,11 +181,19 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
             if (gamepad2.y) {
                 arm_intake.setPower(0.65);
-            }
-
-            if (gamepad2.a) {
+            } else if (gamepad2.a) {
                 arm_intake.setPower(-0.65);
             }
+
+            if (gamepad2.right_bumper) {
+                servo_2.setPosition(1);
+            } else if (gamepad2.left_bumper) {
+                servo_2.setPosition(0);
+            }
+
+
+
+            
             
             if (gamepad1.a) {
                 hang_1.setPower(1);
