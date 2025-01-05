@@ -760,11 +760,14 @@ public class Encoder_Testing extends LinearOpMode {
       back_left.setPower(base_power);
       front_right.setPower(base_power);
       front_left.setPower(base_power);
+
+      //When the robot has not finished its movement. 
       while (front_left.getCurrentPosition() < goal) {
         
         current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
         yaw_error = current_yaw - target_yaw;
         //The signs may need to be switched. Will know if robot starts spinning or something of that sort. 
+        //IF/when the robot becomes unaligned, the wheels will compensate by having some spin slower. 
         back_right.setPower(base_power - yaw_error/100);
         back_left.setPower(base_power + yaw_error/100);
         front_right.setPower(base_power - yaw_error/100);
@@ -773,6 +776,7 @@ public class Encoder_Testing extends LinearOpMode {
         telemetry.addData("Left_Motor", front_left.getCurrentPosition());
         telemetry.update();
       }
+      //Checks at the end of movement so that the robot is still aligned correctly. 
       error = current_yaw - target_yaw;
       Yaw_Turn(error);
 
