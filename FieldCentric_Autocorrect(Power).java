@@ -74,8 +74,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotorEx hang_1 = hardwareMap.get(DcMotorEx.class, "hang_1");
         Servo servo_intake = hardwareMap.servo.get("servo_intake");
         Servo servo_arm = hardwareMap.servo.get("servo_arm");
-        Servo servo_transfer_1 = hardwareMap.servo.get("servo_transfer_1");
-        Servo servo_2 hardwareMap.servo.get("servo_2");
+        Servo servo_2 = hardwareMap.servo.get("servo_2");
         distance_1 = hardwareMap.get(DistanceSensor.class, "distance_1");
 
         
@@ -179,16 +178,17 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //controls for the secound arm. will  be controled with the y and a buttons. 
             //reason there is no checks is becuase we are not puttiong on magnetic limit switchs for some reason...
 
-            if (gamepad2.y) {
-                arm_intake.setPower(0.65);
-            } else if (gamepad2.a) {
-                arm_intake.setPower(-0.65);
+            if (gamepad2.a) {
+                arm_intake.setPower(0.85);
+            } else if (gamepad2.y) {
+                arm_intake.setPower(-0.85);
             }
-
+            //Up
             if (gamepad2.right_bumper) {
                 servo_2.setPosition(1);
+                //Down
             } else if (gamepad2.left_bumper) {
-                servo_2.setPosition(0);
+                servo_2.setPosition(0.3);
             }
 
 
@@ -264,13 +264,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
 
 
-            if (gamepad2.right_bumper) {
-                servo_transfer_1.setPosition(1);
-            } else if (gamepad2.left_bumper) {
-                servo_transfer_1.setPosition(0);
-            } else {
-                servo_transfer_1.setPosition(0.5);
-            }
             
             
             //This does work...Makes the robot be stuck between 100% and 50%. Locks out the 
