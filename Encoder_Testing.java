@@ -124,6 +124,10 @@ public class Encoder_Testing extends LinearOpMode {
       
       
       moveBy(2000);
+
+      //strafeBy(2000);
+
+      //strafeBy(-2000);
       
       while (opModeIsActive()) {
         // Put loop blocks here.
