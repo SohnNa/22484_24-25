@@ -105,14 +105,14 @@ public class Encoder_Testing extends LinearOpMode {
       moveRight2();
       moveBack2();
       moveForward();
-      Yaw_Turn(180);
+      TurnBy(180);
       Left();
       moveForward3();
       servo_arm.setPosition(0);
       sleep(1000);
       armUp2();
       moveBack();
-      Yaw_Turn(180);
+      TurnBy(180);
       strafeLeft();
       smallerForward(); 
       armDown();
@@ -618,7 +618,7 @@ public class Encoder_Testing extends LinearOpMode {
     
   }
   
-  private void Yaw_Turn(double turn) {
+  private void TurnBy(double turn) {
     
     double current_yaw, target_yaw, power;
     YawPitchRollAngles robotOrentation;
@@ -720,8 +720,10 @@ public class Encoder_Testing extends LinearOpMode {
         telemetry.addData("Left_Moter", front_left.getCurrentPosition());
         telemetry.update();
       }
+      //delete 
+      sleep(4000);
       error = current_yaw - target_yaw;
-      Yaw_Turn(error);
+      TurnBy(error);
     
   }
   
@@ -777,8 +779,10 @@ public class Encoder_Testing extends LinearOpMode {
         telemetry.update();
       }
       //Checks at the end of movement so that the robot is still aligned correctly. 
+      //delete
+      sleep(4000);
       error = current_yaw - target_yaw;
-      Yaw_Turn(error);
+      TurnBy(error);
 
   }
   
