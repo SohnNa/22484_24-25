@@ -728,6 +728,7 @@ public class Encoder_Testing extends LinearOpMode {
       sleep(4000);
       //When I added this line of code, the robot did turn more but not in the correct direction. 
       //This occured even when i switched it from  current_yaw + target_yaw to current_yaw - target_yaw. 
+      //This was added after taking the video.  
       robotOrentation = imu.getRobotYawPitchRollAngles();
       current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
       error = current_yaw + target_yaw;
@@ -792,6 +793,7 @@ public class Encoder_Testing extends LinearOpMode {
       
       //When I added this line of code, the robot did turn more but not in the correct direction. 
       //This occured even when i switched it from  current_yaw + target_yaw to current_yaw - target_yaw. 
+      //This was after taking the video. 
       robotOrentation = imu.getRobotYawPitchRollAngles();
       current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
       error = current_yaw - target_yaw;
