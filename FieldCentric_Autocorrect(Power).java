@@ -36,7 +36,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
 
-@TeleOp(name = "Field Centric - 11/6/24 (Power)")
+@TeleOp(name = "Field Centric - 1/9/25 (Power)")
 //@Disabled
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
     
@@ -110,9 +110,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             // might change the direction that is forward when driving in field centric. When tested, it worked but only when the self-correcting was not added. 
             //This data is correct as of 10/9/24
 
-            if (gamepad1.left_bumper) {
-                imu.resetYaw();
-            }
+            //if (gamepad1.left_bumper) {
+            //    imu.resetYaw();
+            //}
             
             
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
@@ -169,7 +169,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     notMovingUp = true;
                     arm_main_power = 0.0;
                 }
-            telemetry.addData("Arm_main", arm_main_power);
+            //telemetry.addData("Arm_main", arm_main_power);
             arm_main.setPower(arm_main_power);
             
             
@@ -179,9 +179,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //reason there is no checks is becuase we are not puttiong on magnetic limit switchs for some reason...
 
             if (gamepad2.a) {
-                arm_intake.setPower(0.85);
+                arm_intake.setPower(1);
             } else if (gamepad2.y) {
-                arm_intake.setPower(-0.85);
+                arm_intake.setPower(-0.5);
+            } else {
+                arm_intake.setPower(0);
             }
             //Up
             if (gamepad2.right_bumper) {
@@ -214,12 +216,12 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 //This is setting it so that when a magnetic limit switch is activated, it changes the Vairable
                 //upAllow from true to false or vice-versa
                 if (mag_arm_upper.isPressed()) {
-                    telemetry.addData("mag_arm_upper Touch Sensor", "activated");
+                    //telemetry.addData("mag_arm_upper Touch Sensor", "activated");
                     upAllow = false;
                     notMovingUp = true;
                   
                 } else {
-                    telemetry.addData("mag_arm_upper Touch Sensor ", "not activated");
+                    //telemetry.addData("mag_arm_upper Touch Sensor ", "not activated");
                     upAllow = true;
               
                 }
@@ -228,16 +230,14 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 //downAllow from true to false or vice-versa/ 
                 if (mag_arm_lower.isPressed()) {
                     
-                    telemetry.addData("mag_arm_lower Touch Sensor", "activated");
+                    //telemetry.addData("mag_arm_lower Touch Sensor", "activated");
                     downAllow = false;
                 } else {
-                    telemetry.addData("mag_arm_lower Touch Sensor ", "not activated");
+                    //telemetry.addData("mag_arm_lower Touch Sensor ", "not activated");
                     downAllow = true;
                 }
     
-                //arm_main.setPower(0);
-                arm_intake.setPower(0);
-                
+
                 
                 
             
@@ -279,16 +279,16 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             }
            
           
-            telemetry.addData("Switch", test2);
-            telemetry.addData("Speed", speed);
-            telemetry.addData("notMovingUp", notMovingUp);
+            //telemetry.addData("Switch", test2);
+            //telemetry.addData("Speed", speed);
+            //telemetry.addData("notMovingUp", notMovingUp);
             
-            telemetry.addData("Front_left", front_left_Power);
-            telemetry.addData("Front_right", front_right_Power);
-            telemetry.addData("Back_left", back_left_Power);
-            telemetry.addData("Back_right", back_right_Power);
+            //telemetry.addData("Front_left", front_left_Power);
+            //telemetry.addData("Front_right", front_right_Power);
+            //telemetry.addData("Back_left", back_left_Power);
+            //telemetry.addData("Back_right", back_right_Power);
             
-            telemetry.addData("Distance", distance_1.getDistance(DistanceUnit.CM));
+            //telemetry.addData("Distance", distance_1.getDistance(DistanceUnit.CM));
             
             
             telemetry.update();
