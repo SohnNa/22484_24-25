@@ -95,26 +95,26 @@ public class Encoder_Testing extends LinearOpMode {
       /*
       servo_arm.setPosition(0);
       armUp();
-      smallForward();
+      moveBy(1540);
       armDown();
       servo_arm.setPosition(1);
       sleep(100);
       armDown2();
-      strafeRight2();
-      moveForward2();
-      moveRight2();
-      moveBack2();
-      moveForward();
+      moveBy(1600);
+      moveBy(1500);
+      strafeBy(600);
+      moveBy(-2500);
+      moveBy(500);
       TurnBy(180);
-      Left();
-      moveForward3();
+      StrafeBy(-280);
+      moveBy(790);
       servo_arm.setPosition(0);
       sleep(1000);
       armUp2();
-      moveBack();
+      moveBy(-800);
       TurnBy(180);
-      strafeLeft();
-      smallerForward(); 
+      strafeBy(-3200);
+      moveBy(870); 
       armDown();
       servo_arm.setPosition(1);
       sleep(100);
@@ -122,10 +122,10 @@ public class Encoder_Testing extends LinearOpMode {
       */
       
       
-      
-      moveBy(2000);
+      //Testing Code
+      //moveBy(2000);
 
-      //strafeBy(2000);
+      strafeBy(2000);
 
       //strafeBy(-2000);
       
@@ -342,7 +342,7 @@ public class Encoder_Testing extends LinearOpMode {
     back_left.setPower(0.6);
     front_right.setPower(0.6);
     front_left.setPower(0.6);
-    while (front_left.getCurrentPosition() > -2900) {
+    while (front_left.getCurrentPosition() > -3200) {
       telemetry.addData("Left_Motor", front_left.getCurrentPosition());
       telemetry.update();
     }
@@ -726,7 +726,7 @@ public class Encoder_Testing extends LinearOpMode {
       }
       //delete 
       sleep(4000);
-      error = current_yaw - target_yaw;
+      error = current_yaw + target_yaw;
       TurnBy(error);
     
   }
@@ -748,7 +748,7 @@ public class Encoder_Testing extends LinearOpMode {
 
       //I think i do not need the Math.signum becuase the power is positve even if I am going to the left or the right
       //at least thats how it worked on my previous functions.
-      double base_power = 0.6 //* Math.signum(goal);
+      double base_power = 0.6; //* Math.signum(goal)
     
       back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
       back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -785,6 +785,11 @@ public class Encoder_Testing extends LinearOpMode {
       //Checks at the end of movement so that the robot is still aligned correctly. 
       //delete
       sleep(4000);
+      
+      //When I added this line of code, the robot did turn more but not in the correct direction. 
+      //This occured even when i switched it from  current_yaw + target_yaw to current_yaw - target_yaw. 
+      robotOrentation = imu.getRobotYawPitchRollAngles();
+      current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
       error = current_yaw - target_yaw;
       TurnBy(error);
 
