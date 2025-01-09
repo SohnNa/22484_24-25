@@ -726,6 +726,10 @@ public class Encoder_Testing extends LinearOpMode {
       }
       //delete 
       sleep(4000);
+      //When I added this line of code, the robot did turn more but not in the correct direction. 
+      //This occured even when i switched it from  current_yaw + target_yaw to current_yaw - target_yaw. 
+      robotOrentation = imu.getRobotYawPitchRollAngles();
+      current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
       error = current_yaw + target_yaw;
       TurnBy(error);
     
@@ -746,7 +750,7 @@ public class Encoder_Testing extends LinearOpMode {
       //signum finds the sum of the number
 
 
-      //I think i do not need the Math.signum becuase the power is positve even if I am going to the left or the right
+      //I think I do not need the Math.signum becuase the power is positve even if I am going to the left or the right
       //at least thats how it worked on my previous functions.
       double base_power = 0.6; //* Math.signum(goal)
     
