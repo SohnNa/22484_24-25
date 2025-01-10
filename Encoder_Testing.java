@@ -731,7 +731,7 @@ public class Encoder_Testing extends LinearOpMode {
       //This was added after taking the video.  
       robotOrentation = imu.getRobotYawPitchRollAngles();
       current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
-      error = current_yaw + target_yaw;
+      error = target_yaw - current_yaw;
       TurnBy(error);
     
   }
@@ -796,7 +796,7 @@ public class Encoder_Testing extends LinearOpMode {
       //This was after taking the video. 
       robotOrentation = imu.getRobotYawPitchRollAngles();
       current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
-      error = current_yaw - target_yaw;
+      error = target_yaw - current_yaw;
       TurnBy(error);
 
   }
