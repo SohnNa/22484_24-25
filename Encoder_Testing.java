@@ -39,7 +39,7 @@ public class Encoder_Testing extends LinearOpMode {
   @Override
   public void runOpMode() {
     YawPitchRollAngles robotOrentation;
-    double current_yaw;
+    double cur_yaw;
  
     
     
@@ -89,50 +89,59 @@ public class Encoder_Testing extends LinearOpMode {
       //Put run blocks here.
       
       robotOrentation = imu.getRobotYawPitchRollAngles();
-      current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
+      cur_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
+      
+      double init_yaw = cur_yaw;
       
       
-      /*
+      
       servo_arm.setPosition(0);
       armUp();
-      moveBy(1540);
+      moveBy(1460);
       armDown();
       servo_arm.setPosition(1);
       sleep(100);
       armDown2();
-      moveBy(1600);
+      strafeBy(1600);
       moveBy(1500);
       strafeBy(600);
       moveBy(-2500);
       moveBy(500);
       TurnBy(180);
-      StrafeBy(-280);
-      moveBy(790);
+      strafeBy(-280);
+      
+      robotOrentation = imu.getRobotYawPitchRollAngles();
+      cur_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
+      
+      //TurnBy(cur_yaw - init_yaw);
+      
+      
+      moveBy(740);//WORK_HERE
       servo_arm.setPosition(0);
       sleep(1000);
       armUp2();
       moveBy(-800);
       TurnBy(180);
       strafeBy(-3200);
-      moveBy(870); 
+      moveBy(490); 
       armDown();
       servo_arm.setPosition(1);
       sleep(100);
       armDown2();
-      */
+      
       
       
       //Testing Code
       //moveBy(2000);
 
-      strafeBy(2000);
+      //strafeBy(2000);
 
       //strafeBy(-2000);
       
       while (opModeIsActive()) {
         // Put loop blocks here.
-        telemetry.addData("yaw(Z)", JavaUtil.formatNumber(current_yaw, 2));
-        telemetry.update();
+        //telemetry.addData("yaw(Z)", JavaUtil.formatNumber(current_yaw, 2));
+        //telemetry.update();
       
                     
                     
@@ -173,15 +182,15 @@ public class Encoder_Testing extends LinearOpMode {
             //}
     
           
-            arm_main.setPower(0);
+            
                 
                 
-        telemetry.addData("Distance", distance_1.getDistance(DistanceUnit.CM));   
-        telemetry.addData("Front_left", front_left.getCurrentPosition());
-        telemetry.addData("front_right", front_right.getCurrentPosition());
-        telemetry.addData("back_left", back_left.getCurrentPosition());
-        telemetry.addData("back_right", back_right.getCurrentPosition());
-        telemetry.addData("Arm", arm_main.getCurrentPosition());
+        //telemetry.addData("Distance", distance_1.getDistance(DistanceUnit.CM));   
+        //telemetry.addData("Front_left", front_left.getCurrentPosition());
+        //telemetry.addData("front_right", front_right.getCurrentPosition());
+        //telemetry.addData("back_left", back_left.getCurrentPosition());
+        //telemetry.addData("back_right", back_right.getCurrentPosition());
+        //telemetry.addData("Arm", arm_main.getCurrentPosition());
         
         telemetry.update();
       }
@@ -642,12 +651,12 @@ public class Encoder_Testing extends LinearOpMode {
     
     
     
-    while (opModeIsActive() && Math.abs(Normal_Angle(current_yaw - target_yaw)) > 1 ) {
+    while (opModeIsActive() && Math.abs(Normal_Angle(current_yaw - target_yaw)) > 0.5 ) {
         
         robotOrentation = imu.getRobotYawPitchRollAngles();
         current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
 
-        power = (current_yaw - target_yaw)/100;
+        power = Normal_Angle((current_yaw - target_yaw))/100;
         //extend out by .1 and clips it so that it is in the zero to one range. 
         power += 0.1 * Math.signum(power);
         if (power > 0.9) {
@@ -662,7 +671,9 @@ public class Encoder_Testing extends LinearOpMode {
         front_right.setPower(-power);
         back_left.setPower(power);
         front_left.setPower(power);
-        telemetry.addData("yaw(Z)", JavaUtil.formatNumber(current_yaw, 2));
+        
+        telemetry.addData("current_yaw", JavaUtil.formatNumber(current_yaw, 2));
+        telemetry.addData("target_yaw", JavaUtil.formatNumber(target_yaw, 2));
         telemetry.addData("Power", power);
         telemetry.update();
       }
@@ -689,11 +700,7 @@ public class Encoder_Testing extends LinearOpMode {
 
       //signum finds the sum of the number
       
-      
- 
-      double base_power = 0.6 * Math.signum(target);
-      
-      
+      double base_power = 0.8 * Math.signum(target);
       
       back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
       back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -711,7 +718,11 @@ public class Encoder_Testing extends LinearOpMode {
       back_left.setPower(base_power);
       front_right.setPower(base_power);
       front_left.setPower(base_power);
-      while (front_left.getCurrentPosition() < target) {
+      
+      
+      //In a nutshell, this lets the robot drive backwards. 
+      while (Math.abs((front_left.getCurrentPosition() - target)) > 5) { 
+      //while (front_left.getCurrentPosition() < target) {
         current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
         yaw_error = current_yaw - target_yaw;
         
@@ -724,8 +735,6 @@ public class Encoder_Testing extends LinearOpMode {
         telemetry.addData("Left_Moter", front_left.getCurrentPosition());
         telemetry.update();
       }
-      //delete 
-      sleep(4000);
       //When I added this line of code, the robot did turn more but not in the correct direction. 
       //This occured even when i switched it from  current_yaw + target_yaw to current_yaw - target_yaw. 
       //This was added after taking the video.  
@@ -733,6 +742,8 @@ public class Encoder_Testing extends LinearOpMode {
       current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
       error = target_yaw - current_yaw;
       TurnBy(error);
+      //Delete
+      sleep(300);
     
   }
   
@@ -753,7 +764,7 @@ public class Encoder_Testing extends LinearOpMode {
 
       //I think I do not need the Math.signum becuase the power is positve even if I am going to the left or the right
       //at least thats how it worked on my previous functions.
-      double base_power = 0.6; //* Math.signum(goal)
+      double base_power = 0.8; //* Math.signum(goal)
     
       back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
       back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -773,7 +784,8 @@ public class Encoder_Testing extends LinearOpMode {
       front_left.setPower(base_power);
 
       //When the robot has not finished its movement. 
-      while (front_left.getCurrentPosition() < goal) {
+      //while (front_left.getCurrentPosition() < goal) {
+      while (Math.abs((front_left.getCurrentPosition() - goal)) > 5) {
         
         current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
         yaw_error = current_yaw - target_yaw;
@@ -788,8 +800,6 @@ public class Encoder_Testing extends LinearOpMode {
         telemetry.update();
       }
       //Checks at the end of movement so that the robot is still aligned correctly. 
-      //delete
-      sleep(4000);
       
       //When I added this line of code, the robot did turn more but not in the correct direction. 
       //This occured even when i switched it from  current_yaw + target_yaw to current_yaw - target_yaw. 
@@ -798,7 +808,8 @@ public class Encoder_Testing extends LinearOpMode {
       current_yaw = robotOrentation.getYaw(AngleUnit.DEGREES);
       error = target_yaw - current_yaw;
       TurnBy(error);
-
+      //Delete
+      sleep(300);
   }
   
   
